@@ -1,0 +1,128 @@
+package kazuate;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.InputMismatchException;
+import java.util.List;
+import java.util.Scanner;
+
+public class Main {
+/*
+ * 「数あてゲーム」
+ * ルール
+ * １．数字は３つ使用する
+ * ２．１つの数字は１～６の範囲とする
+ * ３．数字はそれぞれ異なっていて、重複しない
+ * ４．入力された数字が答えの中にあり、場所も合ってる場合
+ * 		には『ヒット』ととして数える
+ * ５．入力した数字が答えの中にあるが、場所はあってない場合
+ * 		には『ブロー』ととして数える
+ * ６．3つの全てが『ヒットになったら終了』
+ * 
+ * 動作内容
+ * 疑似コード（基本設計）
+ * ①タイトルとルール説明
+ * 
+ * ②１～６の中からランダムで３つの数字を答えとして生成
+ * (数字は重複しないようにする)
+ * 
+ * <開始>
+ *③ 
+ * 数字を１～６の中から３つ入力してもら
+ * (1つずつ入力してもらう)
+ * （数字の重複チェックを行う）
+ * 
+ *④ 結果を表示（正解の判断）
+ * 
+ *⑤ 3つともヒットならクリアに
+ * クリア出ないならまた入力してもらう
+ * クリアするまで繰り返す
+ * */
+	public static void main(String[] args) {
+		//① タイトルとルールの表示
+	System.out.println("【ヒット＆ブロー】");
+	System.out.println("[ルール]\n数字を１～６の中から３つ入力して\n３つすべてヒットでクリアです");
+	
+	//②答えの生成
+	List<Integer>ansA=new ArrayList<>(6);
+	for(int i=1; i<=6; i++) {
+		ansA.add(i);
+	}
+	Collections.shuffle(ansA);
+	
+	//リストcpuに答えを格納
+	List<Integer>cpu=new ArrayList<Integer>();
+	cpu.add(ansA.get(0));
+	cpu.add(ansA.get(1));
+	cpu.add(ansA.get(2));
+	
+	//確認用
+	//System.out.println(ansA);
+	//System.out.println(ansA.toString());
+	//System.out.println(ansA.get(0));
+	//System.out.println(ansA.get(1));
+	//System.out.println(ansA.get(2));
+	//System.out.println(cpu.toString());
+	
+	//チャレンジ回数
+	int count=0;
+	//入力された数字を配列に格納する
+	while(true) {
+		//while(count==3) {
+		count++;
+		System.out.println("\n[チャレンジ"+count+"回目]");
+		List<Integer>playerHand=new ArrayList<Integer>();
+		//答えの数＝３つ 数字を入力してもらう
+	for(int j=0; j<cpu.size(); j++) {
+    
+		//数字の入力
+	System.out.println("１～６の中から数字を１つ入力してください");
+	Scanner sc = new java.util.Scanner(System.in);
+	try {
+			int player =sc.nextInt();
+		if(player<1||player>6) {
+			System.out.println("1～６の中から入力してください");
+			j--;
+			continue;
+		}else if(playerHand.contains(player)){
+			System.out.println("既に入力された値です");
+			j--;
+			continue;
+		}else{
+			playerHand.add(player);
+		}
+	}catch(InputMismatchException e) {
+		System.err.println("エラー:1～6の数字を入力してください");
+		j--;
+	}finally {
+		
+	}
+		}	
+	//入力された数字を表示
+	System.out.println(playerHand.toString());
+	//正解の判定
+	int Hit = 0;
+	int Blow= 0;
+	for(int i=0; i<3; i++) {
+	if(cpu.get(i)==playerHand.get(i)) {
+		Hit++;
+		
+		//i++;
+	}else if(cpu.contains(playerHand.get(i))){
+		Blow++;
+	}
+	}
+	
+	System.out.println("ヒット:"+Hit+"\nブロー:"+Blow);
+	if(Hit==3) {
+		System.out.println("プレイヤーの勝ち！");
+		System.out.println("[チャレンジ回数:"+count+"]");
+		break;
+	}else {
+		System.out.println("残念！");
+	}
+	}
+	
+}
+
+}
